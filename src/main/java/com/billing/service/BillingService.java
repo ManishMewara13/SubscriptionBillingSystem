@@ -62,11 +62,11 @@ public class BillingService {
                 existingCustomer.setActive(false);
                 customerRepository.save(existingCustomer);
                 String message = "Subscription canceled for customer: " + existingCustomer.toString();
-                log.info(message);
+                log.info("Subscription canceled successfully for customer: {}", existingCustomer);
                 return message;
             } else {
                 String message = "Customer not found: " + customerId;
-                log.error(message);
+                log.error("Customer not found: {} during cancel subscription", customerId);
                 throw new CustomerNotFoundException(message);
             }
         } catch (Exception e) {
@@ -108,7 +108,7 @@ public class BillingService {
                 eventPublisher.publishEvent(new PaymentFailedEvent(customer, "Payment failed for subscription"));
             }
         } catch (Exception e) {
-            log.error("Error processing payment for customer " + customer.getId(), e);
+            log.error("Error processing payment for customer {}", customer.getId(), e);
         }
     }
 
